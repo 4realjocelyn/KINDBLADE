@@ -1,19 +1,30 @@
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KINDBLADE</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <audio autoplay loop>
-    <source src="assets/music.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-  <h1>🌸 Welcome to Kindblade 🌸</h1>
-  <canvas id="gameCanvas" width="800" height="600"></canvas>
-  <script src="js/game.js"></script>
-</body>
+<html>
+  <head>
+    <title>Kindblade</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background-color: #f2f0f5;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Music (autoplay and hidden) -->
+    <audio id="bgm" autoplay loop hidden>
+      <source src="assets/music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Game canvas -->
+    <canvas id="gameCanvas" width="1000" height="600"></canvas>
+
+    <!-- Game script -->
+    <script src="js/game.js"></script>
+  </body>
 </html>
