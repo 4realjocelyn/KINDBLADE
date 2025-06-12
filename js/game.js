@@ -1,19 +1,13 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Load background
-const bgImage = new Image();
-bgImage.src = "assets/backgrounds/forest.png";
-
-// Load Akaza
-const akazaImg = new Image();
-akazaImg.src = "assets/characters/akaza.png";
-
 let player = {
   x: 100,
   y: 100,
   width: 50,
   height: 50,
+  color: "purple",
+  name: "Akaza",
   speed: 3
 };
 
@@ -28,21 +22,24 @@ function movePlayer() {
   if (keys["ArrowLeft"]) player.x -= player.speed;
   if (keys["ArrowRight"]) player.x += player.speed;
 
-  // Boundaries
-  if (player.x < 0) player.x = 0;
-  if (player.y < 0) player.y = 0;
-  if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-  if (player.y + player.height > canvas.height) player.y = canvas.height - player.height;
+  // Bounds
+  player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+  player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
 }
 
 function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Fake sky background
+  ctx.fillStyle = "#87ceeb";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Draw background
-  ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+  // Draw Akaza (placeholder square)
+  ctx.fillStyle = player.color;
+  ctx.fillRect(player.x, player.y, player.width, player.height);
 
-  // Draw Akaza
-  ctx.drawImage(akazaImg, player.x, player.y, player.width, player.height);
+  // Name
+  ctx.fillStyle = "black";
+  ctx.font = "16px sans-serif";
+  ctx.fillText(player.name, player.x, player.y - 10);
 }
 
 function gameLoop() {
