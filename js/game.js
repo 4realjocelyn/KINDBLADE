@@ -2,43 +2,53 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 // Load background
-let bgImage = new Image();
+const bgImage = new Image();
 bgImage.src = "assets/backgrounds/forest.png";
 
-// Load Akaza sprite
-let akazaSprite = new Image();
-akazaSprite.src = "assets/characters/akaza.png";
+// Load Akaza
+const akazaImg = new Image();
+akazaImg.src = "assets/characters/akaza.png";
 
 let player = {
   x: 100,
   y: 100,
-  size: 48,
-  name: "Akaza"
+  width: 50,
+  height: 50,
+  speed: 3
 };
 
-function drawBackground() {
-  ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-}
+const keys = {};
 
-function drawPlayer() {
-  ctx.drawImage(akazaSprite, player.x, player.y, player.size, player.size);
-  ctx.fillStyle = "white";
-  ctx.font = "16px Pixel, Arial";
-  ctx.fillText(player.name, player.x, player.y - 10);
+document.addEventListener("keydown", (e) => keys[e.key] = true);
+document.addEventListener("keyup", (e) => keys[e.key] = false);
+
+function movePlayer() {
+  if (keys["ArrowUp"]) player.y -= player.speed;
+  if (keys["ArrowDown"]) player.y += player.speed;
+  if (keys["ArrowLeft"]) player.x -= player.speed;
+  if (keys["ArrowRight"]) player.x += player.speed;
+
+  // Boundaries
+  if (player.x < 0) player.x = 0;
+  if (player.y < 0) player.y = 0;
+  if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+  if (player.y + player.height > canvas.height) player.y = canvas.height - player.height;
 }
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBackground();
-  drawPlayer();
+
+  // Draw background
+  ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+
+  // Draw Akaza
+  ctx.drawImage(akazaImg, player.x, player.y, player.width, player.height);
 }
 
-document.addEventListener("keydown", (e) => {
-  const speed = 5;
-  if (e.key === "ArrowUp" || e.key === "w") player.y -= speed;
-  if (e.key === "ArrowDown" || e.key === "s") player.y += speed;
-  if (e.key === "ArrowLeft" || e.key === "a") player.x -= speed;
-  if (e.key === "ArrowRight" || e.key === "d") player.x += speed;
-});
+function gameLoop() {
+  movePlayer();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
 
-setInterval(draw, 1000 / 60);
+gameLoop();
