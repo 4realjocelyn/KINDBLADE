@@ -22,4 +22,12 @@ function draw() {
   drawPlayer();
 }
 
-setInterval(draw, 1000 / 60);
+setInterval(draw, 1000 / 60); 
+document.addEventListener("keydown", (e) => {
+  const speed = 5;
+  if (e.key === "ArrowUp" || e.key === "w") player.y -= speed;
+  if (e.key === "ArrowDown" || e.key === "s") player.y += speed;
+  if (e.key === "ArrowLeft" || e.key === "a") player.x -= speed;
+  if (e.key === "ArrowRight" || e.key === "d") player.x += speed;
+});
+
