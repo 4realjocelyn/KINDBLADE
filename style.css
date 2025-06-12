@@ -1,12 +1,12 @@
-
 body {
   margin: 0;
-  background: #f0f0f0;
-  font-family: 'Courier New', Courier, monospace;
-  text-align: center;
-  color: #444;
+  overflow: hidden;
+  background-color: #000; /* fallback if canvas fails */
 }
+
 canvas {
-  border: 2px solid #555;
-  margin-top: 20px;
+  display: block;
+  background-color: #87CEEB; /* Sky blue background */
+  width: 100vw;
+  height: 100vh;
 }
