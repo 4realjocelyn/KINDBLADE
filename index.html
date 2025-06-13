@@ -1,16 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KINDBLADE</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Kindblade</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: black;
+    }
+    canvas {
+      display: block;
+      background-color: #87CEEB; /* fallback skyblue */
+    }
+  </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="800" height="500"></canvas>
-  <audio id="bgMusic" autoplay loop>
-    <source src="assets/audio/music.mp3" type="audio/mpeg" />
-  </audio>
-  <script src="game.js"></script>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Load images
+    const bgImage = new Image();
+    bgImage.src = "assets/backgrounds/forest.png";
+
+    const akazaImg = new Image();
+    akazaImg.src = "assets/characters/akaza.png";
+
+    let imagesLoaded = 0;
+    function checkImagesLoaded() {
+      imagesLoaded++;
+      if (imagesLoaded === 2) {
+        requestAnimationFrame(gameLoop);
+      }
+    }
+
+    bgImage.onload = checkImagesLoaded;
+    akazaImg.onload = checkImagesLoaded;
+
+    let player = {
+      x: 100,
+      y: 100,
+      width: 50,
+      height: 50,
+      speed: 3
+    };
+
+    const keys = {};
+
+    document.addEventListener("keydown", (e) => keys[e.key] = true);
+    document.addEventListener("keyup", (e) => keys[e.key] = false);
+
+    function movePlayer() {
+      if (keys["ArrowUp"]) player.y -= player.speed;
+      if (keys["ArrowDown"]) player.y += player.speed;
+      if (keys["ArrowLeft"]) player.x -= player.speed;
+      if (keys["ArrowRight"]) player.x += player.speed;
+
+      // Boundaries
+      if (player.x < 0) player.x = 0;
+      if (player.y < 0) player.y = 0;
+      if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+      if (player.y + player.height > canvas.height) player.y = canvas.height - player.height;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(akazaImg, player.x, player.y, player.width, player.height);
+    }
+
+    function gameLoop() {
+      movePlayer();
+      draw();
+      requestAnimationFrame(gameLoop);
+    }
+  </script>
 </body>
 </html>
